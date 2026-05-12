@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { BookOpen, Users, Award, Globe, ArrowRight, CheckCircle, Star, Play, Zap, Shield, Clock, Heart, Sparkles, Target, TrendingUp, Brain, Languages, Trophy, MessageCircle } from "lucide-react"
+import { BookOpen, Users, Award, Globe, ArrowRight, CheckCircle, Star, Play, Zap, Shield, Clock, Heart, Sparkles, Target, TrendingUp, Brain, Languages, Trophy, MessageCircle, GraduationCap } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export default function HomePage() {
