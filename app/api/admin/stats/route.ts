@@ -75,7 +75,7 @@ async function getAdminStatsHandler(request: NextRequest) {
       _id: "$teacherId",
       teacherName: { $first: "$teacherName" },
       courseCount: { $sum: 1 },
-      totalStudents: { $sum: { $size: "$enrolledStudents" } }
+      totalStudents: { $sum: { $size: { $ifNull: ["$enrolledStudents", []] } } }
     }},
     { $sort: { totalStudents: -1 } },
     { $limit: 5 }
@@ -83,7 +83,7 @@ async function getAdminStatsHandler(request: NextRequest) {
 
   // Get total enrollments
   const enrollmentAgg = await CourseModel.aggregate([
-    { $group: { _id: null, total: { $sum: { $size: "$enrolledStudents" } } } }
+    { $group: { _id: null, total: { $sum: { $size: { $ifNull: ["$enrolledStudents", []] } } } } }
   ])
   const totalEnrollments = enrollmentAgg[0]?.total || 0
 

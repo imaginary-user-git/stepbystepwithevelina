@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -18,8 +18,13 @@ import { Menu, X, ArrowRight, BookOpen, DollarSign, Info, Phone } from "lucide-r
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { user, logout } = useAuth()
   const router = useRouter()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleLogout = () => {
     logout()
@@ -69,9 +74,9 @@ export function Navbar() {
         </div>
 
         {/* User Actions & Mobile Toggle */}
-        <div className="flex items-center space-x-2 md:space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
           <div className="hidden sm:flex items-center space-x-2">
-            {user ? (
+            {mounted && (user ? (
               <Link href={getDashboardLink()}>
                 <Button variant="ghost" className="hover:bg-indigo-100 hover:text-indigo-700 hidden lg:flex">Dashboard</Button>
               </Link>
@@ -81,10 +86,10 @@ export function Navbar() {
                   Sign In
                 </Button>
               </Link>
-            )}
+            ))}
           </div>
 
-          {user ? (
+          {mounted && (user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full border border-indigo-100 p-0 overflow-hidden">
@@ -152,7 +157,8 @@ export function Navbar() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-          )}
+          ))}
+        </div>
 
           {/* Mobile Menu Button */}
           <button 
@@ -162,7 +168,6 @@ export function Navbar() {
             {isMenuOpen ? <X className="h-6 w-6 text-gray-600" /> : <Menu className="h-6 w-6 text-gray-600" />}
           </button>
         </div>
-      </div>
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (

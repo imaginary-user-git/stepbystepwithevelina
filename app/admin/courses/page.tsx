@@ -7,13 +7,15 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Trash2, BookOpen, Eye, EyeOff, Search, ExternalLink, CheckCircle2, XCircle, MoreVertical, Filter, Layers } from "lucide-react"
+import { Trash2, BookOpen, Eye, EyeOff, Search, ExternalLink, CheckCircle2, XCircle, MoreVertical, Filter, Layers, Users } from "lucide-react"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
+import Link from "next/link"
+import { toast } from "sonner"
 
 interface Course {
   _id: string
@@ -214,7 +216,7 @@ export default function ManageCoursesPage() {
                               "bg-slate-100 text-slate-600"
                             }`}
                           >
-                            {course.status.toUpperCase()}
+                            {course.status?.toUpperCase() || "DRAFT"}
                           </Badge>
                         </td>
                         <td className="px-6 py-4 text-right">
