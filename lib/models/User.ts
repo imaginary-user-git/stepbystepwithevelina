@@ -11,6 +11,9 @@ export interface User {
   lastName?: string
   avatar?: string
   bio?: string
+  phoneNumber?: string
+  teacherStatus?: "none" | "pending" | "approved" | "rejected"
+  suspensionReason?: string
   coursesEnrolled: ObjectId[] // array of course IDs
   coursesCreated: ObjectId[] // for teachers - courses they created
   progress: Record<
@@ -92,6 +95,19 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
       maxlength: 500,
+    },
+    phoneNumber: {
+      type: String,
+      trim: true,
+    },
+    teacherStatus: {
+      type: String,
+      enum: ["none", "pending", "approved", "rejected"],
+      default: "none",
+    },
+    suspensionReason: {
+      type: String,
+      trim: true,
     },
     coursesEnrolled: [{
       type: mongoose.Schema.Types.ObjectId,

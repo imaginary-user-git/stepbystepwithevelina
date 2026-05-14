@@ -41,6 +41,8 @@ export interface Course {
   estimatedDuration: number // in hours
   isPublished: boolean
   publishedAt?: Date
+  status: "draft" | "pending" | "approved" | "rejected"
+  rejectionReason?: string
   rating: number
   totalRatings: number
   createdAt: Date
@@ -201,6 +203,15 @@ const courseSchema = new mongoose.Schema({
   },
   publishedAt: {
     type: Date,
+  },
+  status: {
+    type: String,
+    enum: ["draft", "pending", "approved", "rejected"],
+    default: "draft",
+  },
+  rejectionReason: {
+    type: String,
+    trim: true,
   },
   rating: {
     type: Number,

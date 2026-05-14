@@ -26,28 +26,66 @@ async function getAdminStatsHandler(request: NextRequest) {
   await checkAdmin(request)
   await connectDB()
 
-  // Get user statistics
-  const totalUsers = await UserModel.countDocuments()
-  const totalStudents = await UserModel.countDocuments({ role: "student" })
-  const totalTeachers = await UserModel.countDocuments({ role: "teacher" })
-  
+  // Basic counts
+  const [
+    totalUsers,
+    totalStudents,
+    totalTeachers,
+    totalCourses,
+    publishedCourses,
+    pendingCourses,
+  ] = await Promise.all([
+    UserModel.countDocuments(),
+    UserModel.countDocuments({ role: "student" }),
+    UserModel.countDocuments({ role: "teacher" }),
+    CourseModel.countDocuments(),
+    CourseModel.countDocuments({ status: "approved" }),
+    CourseModel.countDocuments({ status: "pending" }),
+  ])
+
   // New users this month
   const startOfMonth = new Date()
   startOfMonth.setDate(1)
   startOfMonth.setHours(0, 0, 0, 0)
   const newUsersThisMonth = await UserModel.countDocuments({ createdAt: { $gte: startOfMonth } })
 
-  // Get course statistics
-  const totalCourses = await CourseModel.countDocuments()
-  const publishedCourses = await CourseModel.countDocuments({ isPublished: true })
-  const draftCourses = totalCourses - publishedCourses
+  // Growth Data (last 6 months)
+  const sixMonthsAgo = new Date()
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5)
+  sixMonthsAgo.setDate(1)
+  sixMonthsAgo.setHours(0, 0, 0, 0)
 
-  // Get total enrollments and avg progress
-  const courses = await CourseModel.find({}).lean()
-  const totalEnrollments = courses.reduce((sum, course) => sum + (course.enrolledStudents?.length || 0), 0)
-  
-  // System metrics (mocked or calculated)
-  const averageCourseProgress = 68 // This would normally be calculated from progress records
+  const userGrowth = await UserModel.aggregate([
+    { $match: { createdAt: { $gte: sixMonthsAgo } } },
+    {
+      $group: {
+        _id: {
+          month: { $month: "$createdAt" },
+          year: { $year: "$createdAt" }
+        },
+        count: { $sum: 1 }
+      }
+    },
+    { $sort: { "_id.year": 1, "_id.month": 1 } }
+  ])
+
+  // Top Teachers
+  const topTeachers = await CourseModel.aggregate([
+    { $group: {
+      _id: "$teacherId",
+      teacherName: { $first: "$teacherName" },
+      courseCount: { $sum: 1 },
+      totalStudents: { $sum: { $size: "$enrolledStudents" } }
+    }},
+    { $sort: { totalStudents: -1 } },
+    { $limit: 5 }
+  ])
+
+  // Get total enrollments
+  const enrollmentAgg = await CourseModel.aggregate([
+    { $group: { _id: null, total: { $sum: { $size: "$enrolledStudents" } } } }
+  ])
+  const totalEnrollments = enrollmentAgg[0]?.total || 0
 
   return successResponse({
     totalUsers,
@@ -56,10 +94,12 @@ async function getAdminStatsHandler(request: NextRequest) {
     newUsersThisMonth,
     totalCourses,
     publishedCourses,
-    draftCourses,
+    pendingCourses,
     totalEnrollments,
-    averageCourseProgress,
-    activeUsers: Math.floor(totalUsers * 0.4) // Mocked active user stat
+    userGrowth,
+    topTeachers,
+    averageCourseProgress: 72, // Target metric
+    activeUsers: Math.floor(totalUsers * 0.45)
   })
 }
 

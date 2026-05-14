@@ -114,6 +114,29 @@ export function Navbar() {
                     Settings
                   </Link>
                 </DropdownMenuItem>
+                {user.role === "admin" && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin/users" className="flex items-center px-2 py-2 cursor-pointer">
+                        <span className="mr-3 text-lg">👥</span>
+                        Manage Users
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin/courses" className="flex items-center px-2 py-2 cursor-pointer">
+                        <span className="mr-3 text-lg">📚</span>
+                        Course Oversight
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin/audit" className="flex items-center px-2 py-2 cursor-pointer">
+                        <span className="mr-3 text-lg">📜</span>
+                        Audit Trail
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="flex items-center px-2 py-2 cursor-pointer text-red-600 focus:text-red-700 focus:bg-red-50">
                   <span className="mr-3 text-lg">🚪</span>
