@@ -102,7 +102,7 @@ export default function AdminDashboard() {
         })
         if (usersRes.ok) {
           const data = await usersRes.json()
-          setRecentUsers(data.data.users || [])
+          setRecentUsers(data.data?.users || [])
         }
 
         const coursesRes = await fetch("/api/admin/courses?limit=5", {
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
         })
         if (coursesRes.ok) {
           const data = await coursesRes.json()
-          setRecentCourses(data.data.courses || [])
+          setRecentCourses(data.data?.courses || [])
         }
       } catch (error) {
         toast.error("Failed to load dashboard data")
