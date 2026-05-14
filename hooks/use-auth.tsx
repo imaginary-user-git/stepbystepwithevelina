@@ -1,5 +1,6 @@
 "use client"
 
+
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 
 interface User {
@@ -64,7 +65,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    // Return a safe default for server-side or error-page rendering
+    return {
+      user: null,
+      token: null,
+      login: () => {},
+      logout: () => {},
+      isLoading: false
+    }
   }
   return context
 }

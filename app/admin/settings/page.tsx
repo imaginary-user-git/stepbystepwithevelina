@@ -1,5 +1,7 @@
 "use client"
 
+
+
 import { useEffect, useState } from "react"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { useAuth } from "@/hooks/use-auth"
