@@ -177,7 +177,7 @@ export default function AdminDashboard() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-xs font-black uppercase tracking-widest text-gray-400 mb-1">{item.label}</p>
-                    <h3 className="text-3xl font-black text-gray-900 leading-none">{item.value.toLocaleString()}</h3>
+                    <h3 className="text-3xl font-black text-gray-900 leading-none">{item.value?.toLocaleString() || "0"}</h3>
                     <p className={`text-xs font-bold mt-2 text-${item.color}-600`}>{item.sub}</p>
                   </div>
                   <div className={`p-3 bg-${item.color}-50 rounded-xl`}>
@@ -265,7 +265,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-black text-white">{teacher.totalStudents.toLocaleString()}</p>
+                      <p className="text-lg font-black text-white">{teacher.totalStudents?.toLocaleString() || "0"}</p>
                       <p className="text-[10px] text-indigo-300 font-bold">Students</p>
                     </div>
                   </div>
