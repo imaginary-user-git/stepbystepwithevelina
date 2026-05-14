@@ -122,7 +122,7 @@ export default function AdminDashboard() {
     if (token) fetchAdminData()
   }, [token])
 
-  const chartData = stats?.userGrowth.map(item => ({
+  const chartData = stats?.userGrowth?.map(item => ({
     name: `${item._id.month}/${item._id.year}`,
     users: item.count
   })) || []
@@ -253,7 +253,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="space-y-6">
-                {stats.topTeachers.map((teacher, i) => (
+                {stats?.topTeachers?.map((teacher, i) => (
                   <div key={i} className="flex items-center justify-between group">
                     <div className="flex items-center gap-4">
                       <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-indigo-200 border border-white/5 group-hover:bg-indigo-500 group-hover:text-white transition-all">
