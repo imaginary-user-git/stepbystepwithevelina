@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { type NextRequest } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import { authenticateRequest } from "@/lib/middleware/security"

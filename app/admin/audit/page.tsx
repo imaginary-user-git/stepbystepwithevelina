@@ -131,18 +131,18 @@ export default function AuditLogsPage() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <div className="h-7 w-7 rounded-full bg-indigo-50 flex items-center justify-center font-bold text-[10px] text-indigo-600 border border-indigo-100">
-                              {log.adminName.charAt(0).toUpperCase()}
+                              {log.adminName?.charAt(0)?.toUpperCase() || '?'}
                             </div>
-                            <span className="text-sm font-bold text-gray-700">{log.adminName}</span>
+                            <span className="text-sm font-bold text-gray-700">{log.adminName || 'System/Unknown'}</span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <Badge className={`rounded-md px-2 py-0.5 font-bold text-[10px] tracking-wider ${
-                            log.action.includes("DELETE") ? "bg-rose-50 text-rose-700" :
-                            log.action.includes("CREATE") ? "bg-emerald-50 text-emerald-700" :
+                            log.action?.includes("DELETE") ? "bg-rose-50 text-rose-700" :
+                            log.action?.includes("CREATE") ? "bg-emerald-50 text-emerald-700" :
                             "bg-indigo-50 text-indigo-700"
                           }`}>
-                            {log.action.replace("_", " ")}
+                            {log.action?.replace("_", " ") || "UNKNOWN"}
                           </Badge>
                         </td>
                         <td className="px-6 py-4">
